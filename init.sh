@@ -13,5 +13,12 @@ then
     echo "enable myconf for nginx"
 fi
 
-service nginx restart 
+sudo mkdir /etc/gunicorn.d/
+sudo ln -s /home/box/web/etc/hello.conf /etc/gunicorn.d/hello.conf
+echo "gunicorn conf copy"
+
+sudo service gunicorn restart
+echo "nginx restart"
+
+sudo service nginx restart 
 echo "nginx restart"
