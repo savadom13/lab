@@ -14,11 +14,11 @@ class QuestionManager (models.Manager):
         return self.order_by('rating')
 
 class Question (models.Model):
-    title = models.CharField(max_length=128)
+    title = models.CharField(max_length=127)
     text = models.TextField()
     added_at = models.DateField(auto_now_add=True)
-    rating = models.IntegerField()
-    author = models.ForeignKey(User)
+    rating = models.IntegerField(default=0)
+    author = models.ForeignKey(User, related_name="authors")
     likes = models.ManyToManyField(User, related_name="likes")
     objects = QuestionManager()
 
