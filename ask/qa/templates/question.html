@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %} {{ block.super }} - {{ question.title }} {% endblock %}
+
+{% block content %}
+
+    <ul>{{ question.title }}</ul>
+    {{ question.text }}
+
+{% endblock %}

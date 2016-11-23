@@ -11,7 +11,7 @@ class QuestionManager (models.Manager):
 
     def popular(self):
         '''метод возвращающий вопросы﻿ отсортированные по рейтингу'''
-        return self.order_by('rating')
+        return self.order_by('-rating')
 
 class Question (models.Model):
     title = models.CharField(max_length=127)
