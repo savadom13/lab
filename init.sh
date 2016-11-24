@@ -15,6 +15,7 @@ fi
 
 
 sudo pip install django
+sudo pip install django-autofixture
 echo "pip django install"
 
 sudo mkdir /etc/gunicorn.d/

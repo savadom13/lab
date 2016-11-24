@@ -31,7 +31,7 @@ def index(request, *args, **kwargs):
 @require_GET
 def question_detail(request, pk):
     question = get_object_or_404(Question, pk=pk)
-    context = {'question' : question}
+    context = {'question' : question, 'answers' : question.answer_set.all()}
     return render(request, 'question.html', context)
 
 @require_GET

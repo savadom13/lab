@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class QuestionManager (models.Manager):
     def new(self):
         '''метод возвращающий последние добавленные вопросы'''
-        return self.order_by('added_at')
+        return self.order_by('-id')
 
     def popular(self):
         '''метод возвращающий вопросы﻿ отсортированные по рейтингу'''
