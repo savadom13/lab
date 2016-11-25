@@ -1,16 +1,10 @@
 {% extends "base.html" %}
 {% block title %} {{ block.super }} – новые {% endblock %}
-
-
 {% block content %}
     <ul>
     {% for question in questions %}
         <li>{{ question.id }} <a href='/question/{{ question.id }}'>{{ question.title }}</a></li>
 {#        TODO REPLACE BY REVERCE ROUTING#}
-
     {% endfor %}
-    </ul>
-
-    {% include "pagination.html" %}
-
+    </ul>{% include "pagination.html" %}
 {% endblock %}

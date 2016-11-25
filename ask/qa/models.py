@@ -22,6 +22,9 @@ class Question (models.Model):
     likes = models.ManyToManyField(User, related_name="likes")
     objects = QuestionManager()
 
+    def get_absolute_url(self):
+        return "/question/%i/" % self.id
+
 class Answer  (models.Model):
     text = models.TextField()
     added_at = models.DateField(auto_now_add=True)

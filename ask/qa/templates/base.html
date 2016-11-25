@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <title>{%block title%}Q&A{%endblock%}</title>
     {%block extrahead%}{%endblock%}</head>
-
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    {% bootstrap_messages %}
 <body>
-
     <h1>Вопросы и ответы</h1>
-
     <div id="content">
         {% block content %}
         {% endblock %}
@@ -18,6 +18,5 @@
         {% block sidebar %}
         {% endblock %}
     </div>
-
 </body>
 </html>
