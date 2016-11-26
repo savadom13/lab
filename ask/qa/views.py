@@ -29,8 +29,9 @@ def index(request, *args, **kwargs):
     context = {'questions' : questions}
     return render(request, 'news.html', context)
 
-@require_GET
 def question_detail(request, pk):
+    if request.method == "POST":
+        return HttpResponse('OK')
     question = get_object_or_404(Question, pk=pk)
     form = AnswerForm()
     context = {'question' : question, 'answers' : question.answer_set.all(), 'form' : form }
@@ -70,8 +71,9 @@ def ask(request):
         'form' : form
     })
 
-@require_POST
 def answer(request):
+    if request.method == "POST":
+        return HttpResponse('OK')
     answer_form = AnswerForm(request.POST)
     if answer_form.is_valid():
         answer = answer_form.save()
