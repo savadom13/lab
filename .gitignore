@@ -1,15 +1,20 @@
-*~
-*.orig
+# Local
+*_local*
+static
+env
+
+# Temporary files
 *.pyc
-*.rej
-.installed.cfg
-__minitage__*
-bin/*
-develop-eggs
-downloads
-eggs
+__pycache__
+*.swp
+*.log
 log
-parts
-media/uploads
-tmp
-.DS_Store
+
+# Test data
+*fixtures*
+
+# Database
+*.sqlite3
+
+#Pycharm settings
+.idea/

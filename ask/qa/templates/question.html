@@ -10,9 +10,9 @@
     {% endfor %}
     </ul>
     <ul>
-        <form class="form-horizontal" method="post" action={% url 'answer' %}>
-            {% csrf_token %}
-            <fieldset>
+{#        <form class="form-horizontal" method="post" action={% url 'answer' %}>#}
+{#            {% csrf_token %}#}
+{#            <fieldset>#}
 {#                {% for field in form %}#}
 {#                    <div class="control-group">#}
 {#                        {% if field.errors %}has-error{% endif %}#}
@@ -20,19 +20,40 @@
 {#                        <div class="controls" > {{ field }} </div>#}
 {#                    </div>#}
 {#                {% endfor %}#}
-                    <div class="control-group">
-                        <p>Введите текст</p>
-                        <div class="controls" > {{ form.text }} </div>
-                        <input type="hidden" name = "question_id" value="{{question.id}}">
-                    </div>
+{#                    <div class="control-group">#}
+{#                        <p>Введите текст</p>#}
+{#                        <div class="controls" > {{ form.text }} </div>#}
+{#                        <input type="hidden" name = "question" value="{{question.id}}">#}
+{#                    </div>#}
+{##}
+{#            </fieldset>#}
+{#            <div class="form-actions">#}
+{#                <button type="submit" class="btn btn-primary">#}
+{#                    Сохранить#}
+{#                </button>#}
+{#            </div>#}
+{#        </form>#}
 
-            </fieldset>
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">
-                    Сохранить
-                </button>
-            </div>
-        </form>
+  {% block question_ask %}
+    <h1>Your answer:</h1>
+    {% for e in form.non_field_errors %}
+      <div class="alert">{{ e }}</div>
+    {% endfor %}
+    <div class="form">
+      <form method="post" action="/answer/">
+        {% csrf_token %}
+          {% for field in form %}
+             <div class="form-field"{% if field.errors %} alert{% endif %}>
+               {{ field }}
+               {{ field.errors }}
+             </div>
+          {% endfor %}
+        <button type="submit" class="btn">Add answer</button>
+      </form>
+    </div>
+  {%endblock%}
+
+
     </ul>
 
 {% endblock %}

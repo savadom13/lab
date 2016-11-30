@@ -29,12 +29,18 @@ def index(request, *args, **kwargs):
     context = {'questions' : questions}
     return render(request, 'news.html', context)
 
+<<<<<<< HEAD
+=======
+#@require_GET
+>>>>>>> 99c5ee1
 def question_detail(request, pk):
     if request.method == "POST":
         return HttpResponse('OK')
     question = get_object_or_404(Question, pk=pk)
-    form = AnswerForm()
-    context = {'question' : question, 'answers' : question.answer_set.all(), 'form' : form }
+    form = AnswerForm(initial={'question': str(pk)})
+    context = {'question' : question,
+               'answers' : question.answer_set.all(),
+               'form' : form }
     return render(request, 'question.html', context)
 
 @require_GET
@@ -71,8 +77,9 @@ def ask(request):
         'form' : form
     })
 
+#@require_POST
 def answer(request):
-    if request.method == "POST":
+    if request.method == "GET":
         return HttpResponse('OK')
     answer_form = AnswerForm(request.POST)
     if answer_form.is_valid():
