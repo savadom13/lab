@@ -22,12 +22,26 @@ class Question (models.Model):
     likes = models.ManyToManyField(User, related_name="likes")
     objects = QuestionManager()
 
+    class Meta:
+        verbose_name = 'Вопрос'
+        verbose_name_plural = 'Вопросы'
+
     def get_absolute_url(self):
         return "/question/%i/" % self.id
+
+    def __str__(self):
+        return self.title
 
 class Answer  (models.Model):
     text = models.TextField()
     added_at = models.DateField(auto_now_add=True)
     question = models.ForeignKey(Question)
     author = models.ForeignKey(User)
+
+    class Meta:
+        verbose_name = 'Ответ'
+        verbose_name_plural = 'Ответы'
+
+    def __str__(self):
+        return '{} Answer on {}'.format(self.author, self.question.title)
 

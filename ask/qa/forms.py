@@ -1,4 +1,5 @@
 from django import forms
+from django.shortcuts import get_object_or_404
 from .models import Question,Answer
 
 class AskForm(forms.Form):
@@ -13,9 +14,18 @@ class AskForm(forms.Form):
 
 class AnswerForm(forms.Form):
     text = forms.CharField()
-    question_id = forms.IntegerField(widget=forms.HiddenInput)
+    question = forms.IntegerField(widget=forms.HiddenInput)
+
+    def clean_question(self):
+        question = self.cleaned_data['question']
+        if question == 0:
+            raise forms.ValidationError(u'Question number incorrect',
+                                        code='validation_error')
+        return question
 
     def save(self):
+        self.cleaned_data['question'] = get_object_or_404(
+            Question, pk=self.cleaned_data['question'])
         answer = Answer(**self.cleaned_data)
         answer.author_id = 1
         #answer.question_id = self.
