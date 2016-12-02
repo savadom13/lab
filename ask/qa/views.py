@@ -98,8 +98,13 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             answer = form.save()
+            sessionid = do_login(request.POST.get('username'), request.POST.get('password'))
             url = '/'
-            return HttpResponseRedirect(url)
+            response = HttpResponseRedirect(url)
+            response.set_cookie('sessionid', sessionid,
+                                httponly=True, expires=datetime.now() + timedelta(hours=48)
+                                )
+            return response
     else:
         # show clean form
         form = SignupForm()
