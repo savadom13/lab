@@ -3,8 +3,7 @@
 {% block content %}
     <ul>
     {% for question in questions %}
-        <li>{{ question.id }} <a href='/question/{{ question.id }}'>{{ question.title }}</a></li>
-{#        TODO REPLACE BY REVERCE ROUTING#}
+        <li>{{ question.id }} <a href="{% url 'question_detail' question.id %}">{{ question.title }}</a></li>
     {% endfor %}
     </ul>
     {% include "pagination.html" %}

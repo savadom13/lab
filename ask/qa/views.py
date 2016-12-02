@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, response
 from django.template import Context, loader
-from .models import Question,Answer
+from .models import Question,Answer,Session
 from django.views.decorators.http import require_GET,require_POST
 from .forms import *
+from datetime import datetime, timedelta
+from lib.login import do_login
 
 @require_GET
 def test(request):
@@ -29,10 +31,6 @@ def index(request, *args, **kwargs):
     context = {'questions' : questions}
     return render(request, 'news.html', context)
 
-<<<<<<< HEAD
-=======
-#@require_GET
->>>>>>> 99c5ee1
 def question_detail(request, pk):
     if request.method == "POST":
         return HttpResponse('OK')
@@ -90,3 +88,58 @@ def answer(request):
         context = {'form':answer_form}
         return render(request, 'question.html', context)
 
+
+def signup(request):
+    # handle form post
+    if request.method == "POST":
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            answer = form.save()
+            url = '/'
+            return HttpResponseRedirect(url)
+    else:
+        # show clean form
+        form = SignupForm()
+    # show worm with wgong data
+    return render(request, 'signup.html', {
+        'form': form
+    })
+
+
+def login(request):
+    error = ''
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        login = request.POST.get('username')
+        passw = request.POST.get('password')
+        url = request.POST.get('contunie', '/')
+        sessionid = do_login(login, passw)
+        if sessionid:
+            response = HttpResponseRedirect(url)
+            response.set_cookie('sessionid', sessionid,
+                                httponly=True, expires=datetime.now() + timedelta(hours=6)
+                                )
+            return response
+        else:
+            error = u'Wrong login/password'
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {
+        'error' : error,
+        'form' : form
+    })
+
+@require_POST
+def logout(request):
+    sessionid = request.COOKIES.get('sessionid')
+    if sessionid is not None:
+        try:
+            session = Session.objects.get(key=sessionid)
+            session.delete()
+        except:
+            pass
+    # url = request.GET.get('continue', '/')
+    # return HttpResponseRedirect(url)
+    response = redirect('/')
+    response.delete_cookie('sessionid')
+    return response

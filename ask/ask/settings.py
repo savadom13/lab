@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'qa',
+    'autofixture'
+
 ]
 
 MIDDLEWARE = [
@@ -48,7 +50,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'qa.middleware.CheckSessionMiddleware',
 ]
+
+MIDDLEWARE_CLASSES = (
+    'qa.middleware.CheckSessionMiddleware',
+)
 
 ROOT_URLCONF = 'ask.urls'
 

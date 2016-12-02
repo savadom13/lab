@@ -4,7 +4,28 @@
     <meta charset="UTF-8">
     <title>{%block title%}Q&A{%endblock%}</title>
 <body>
-    <h1>Вопросы и ответы</h1>
+    <table border="0" width="100%">
+        <tr >
+            <th rowspan="3"> <h1>Вопросы и ответы</h1></th>
+            <th><a href="/login">Login</a></th>
+        </tr>
+        <tr>
+            <th><a href="/signup">Signup</a></th>
+        </tr>
+        <tr>
+            <th>
+                {% if user %}
+                    <form method="post" action={% url 'logout' %}>
+                        <button type="submit" >
+                            Logout({{ user }})
+                        </button>
+                    </form>
+                {% else %}
+                    Anonymus
+                {% endif %}
+            </th>
+        </tr>
+    </table>
     <div id="content">
         {% block content %}
         {% endblock %}
