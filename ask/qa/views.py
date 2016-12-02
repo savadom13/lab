@@ -8,6 +8,7 @@ from django.views.decorators.http import require_GET,require_POST
 from .forms import *
 from datetime import datetime, timedelta
 from lib.login import do_login
+from lib.logout import do_logout
 
 @require_GET
 def test(request):
@@ -63,6 +64,7 @@ def ask(request):
     #handle form post
     if request.method == "POST":
         form = AskForm(request.POST)
+        form._user = request.user
         if form.is_valid():
             question = form.save()
             url = question.get_absolute_url()
@@ -80,6 +82,7 @@ def answer(request):
     if request.method == "GET":
         return HttpResponse('OK')
     answer_form = AnswerForm(request.POST)
+    answer_form._user = request.user
     if answer_form.is_valid():
         answer = answer_form.save()
         answer.question
@@ -117,7 +120,7 @@ def login(request):
         if sessionid:
             response = HttpResponseRedirect(url)
             response.set_cookie('sessionid', sessionid,
-                                httponly=True, expires=datetime.now() + timedelta(hours=6)
+                                httponly=True, expires=datetime.now() + timedelta(hours=48)
                                 )
             return response
         else:
@@ -133,13 +136,7 @@ def login(request):
 def logout(request):
     sessionid = request.COOKIES.get('sessionid')
     if sessionid is not None:
-        try:
-            session = Session.objects.get(key=sessionid)
-            session.delete()
-        except:
-            pass
-    # url = request.GET.get('continue', '/')
-    # return HttpResponseRedirect(url)
+        do_logout(sessionid)
     response = redirect('/')
     response.delete_cookie('sessionid')
     return response

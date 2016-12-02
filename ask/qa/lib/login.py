@@ -22,7 +22,7 @@ def do_login(login, passw):
     session = Session()
     session.key = get_new_uid()
     session.user = user
-    session.expires = datetime.now() + timedelta(hours=6)
+    session.expires = datetime.now() + timedelta(hours=48)
     session.save()
 
     return session.key

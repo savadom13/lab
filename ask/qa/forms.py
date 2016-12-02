@@ -7,34 +7,18 @@ class AskForm(forms.Form):
     title = forms.CharField(max_length=100)
     text = forms.CharField(widget=forms.Textarea)
 
-    # def __init__(self, user = 'Anonimus', **kwargs):
-    #     self._user = user
-    #     super(AskForm, self).__init__(**kwargs)
-    #
-    #
-    # def clean(self):
-    #     if not self._user.is_active:
-    #         raise forms.ValidationErroer(u"Access denied")
-
     def save(self):
         question = Question(**self.cleaned_data)
-        question.author_id = 1
-        # self.cleaned_data["author"] = self._user
+        if self._user:
+            question.author = self._user
+        else:
+            question.author = get_object_or_404(User, pk=1)
         question.save()
         return question
 
 class AnswerForm(forms.Form):
     text = forms.CharField()
     question = forms.IntegerField(widget=forms.HiddenInput)
-    #
-    # def __init__(self, *args, **kwargs):
-    #     self._user = kwargs.get('user')
-    #     super(AnswerForm, self).__init__(*args)
-
-    # def clean(self):
-        # pass
-    #     if not self._user.is_active:
-    #         raise forms.ValidationErroer(u"Access denied")
 
     def clean_question(self):
         question = self.cleaned_data['question']
@@ -46,14 +30,11 @@ class AnswerForm(forms.Form):
     def save(self):
         self.cleaned_data['question'] = get_object_or_404(
             Question, pk=self.cleaned_data['question'])
-        # self.cleaned_data['author'] = get_object_or_404(
-        #     User, pk=self.cleaned_data['author'])
-
         answer = Answer(**self.cleaned_data)
-        answer.author_id = 1
-        #answer.question_id = self.
-        # self.cleaned_data["author"] = self._user
-        # answer.author_id = self._user
+        if self._user:
+            answer.author = self._user
+        else:
+            answer.author = get_object_or_404(User, pk=1)
         answer.save()
         return answer
 
